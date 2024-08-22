@@ -1,12 +1,12 @@
 
 
 import { useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Line, Bar } from 'react-chartjs-2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend);
 
 const generateChartData = (indicator, data, years) => ({
   labels: years,
@@ -197,8 +197,43 @@ Malawi: [
           </div>
         ))}
       </div>
+      <div className="grid grid-cols-2 gap-4">
+  {dummyData[selectedCountry].map(item => (
+    <div key={item.indicator} className="border p-4">
+      <h3 className="text-center font-bold mb-2 text-blue-700">{item.indicator}</h3>
+      <div style={{ position: 'relative', height: '200px', width: '100%' }}>
+        <Bar
+          data={generateChartData(item.indicator, item.data, years)}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'top',
+                labels: {
+                  color: 'rgba(54,162,235,1)',
+                },
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(tooltipItem) {
+                    return tooltipItem.dataset.label + ': ' + tooltipItem.raw;
+                  },
+                },
+              },
+            },
+            aspectRatio: 1,
+          }}
+        />
+      </div>
     </div>
+  ))}
+</div>
+
+    </div>
+    
   );
 };
 
 export default CountryDetails;
+

@@ -1,22 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faTree, faDollarSign, faBalanceScale, faBank, faChartLine, faFlag, faGenderless, faMoneyBill, faDatabase, faCircleNotch, faWater, faHandshake } from '@fortawesome/free-solid-svg-icons';
 import { faBalanceScale, faDatabase, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 const data = [
     { icon: faDatabase, title: 'General KAM Exports and Import Data' },
     { icon: faCircleNotch, title: 'KAM Exports Data' },
     { icon: faBalanceScale, title: 'KAM Imports Data' },
-    // { icon: faTree, title: 'Environment' },
-    // { icon: faDollarSign, title: 'Debt' },
-    // { icon: faMoneyBill, title: 'Financial Flows' },
-    // { icon: faBank, title: 'Financial Sector' },
-    // { icon: faHandshake, title: 'Governance' },
-    // { icon: faChartLine, title: 'Monetary Statistics' },
-    // { icon: faFlag, title: 'National Accounts' },
-    // { icon: faWater, title: 'Prices' },
-    // { icon: faGenderless, title: 'Gender' },
-    // { icon: faDollarSign, title: 'Public Finance' },
-    // { icon: faFlag, title: 'The High 5s' },
+    
 ];
 
 const DataByTopics = () => {

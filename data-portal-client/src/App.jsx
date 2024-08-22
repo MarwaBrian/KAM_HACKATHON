@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './Pages/HomePage';
 import DataRepository from './Pages/DataRepository';
 import DataSheets from './Pages/DataSheets';
+import Dashboard from './Pages/Dashboard';
 import Header from "./Components/Header"
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/data-repository" element={<DataRepository />} />
         <Route path="/data-sheets" element={<DataSheets />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/country/:countryName" element={<CountryDetails />} />

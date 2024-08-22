@@ -28,6 +28,7 @@ const Navbar = () => {
             <li><Link to="/" className="hover:underline" onClick={closeMenu}>Home</Link></li>
             <li><Link to="/data-repository" className="hover:underline" onClick={closeMenu}>KAM Data Repository</Link></li>
             <li><Link to="/data-sheets" className="hover:underline" onClick={closeMenu}>Basic Data Sheets</Link></li>
+            <li><Link to="/dashboard" className="hover:underline" onClick={closeMenu}>Dashboards</Link></li>
           </ul>
           <div className="hidden md:flex space-x-4">
             <Link to="/login" onClick={closeMenu}>
@@ -42,6 +43,7 @@ const Navbar = () => {
               <li><Link to="/" className="hover:underline" onClick={closeMenu}>Home</Link></li>
               <li><Link to="/data-repository" className="hover:underline" onClick={closeMenu}>KAM Data Repository</Link></li>
               <li><Link to="/data-sheets" className="hover:underline" onClick={closeMenu}>Basic Data Sheets</Link></li>
+              <li><Link to="/dashboard" className="hover:underline" onClick={closeMenu}>Dashboards</Link></li>
               <li><Link to="/login" className="hover:underline" onClick={closeMenu}>Log In</Link></li>
               <li><Link to="/signup" className="hover:underline" onClick={closeMenu}>Sign Up</Link></li>
             </ul>
