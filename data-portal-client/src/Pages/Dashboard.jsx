@@ -25,7 +25,7 @@ const Dashboard = () => {
           className="w-full rounded-lg shadow-lg"
         />
         <a
-          href="#"
+          href="https://public.tableau.com/app/profile/sharon.kaliku/viz/KAMHACKATHON/Dashboard2"
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600"
         >
           View Dashboard ➔
