@@ -8,6 +8,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
+  const closeMenu = () => setIsOpen(false);
 
   return (
     <header className="bg-blue-700 text-white p-4 relative">
@@ -24,25 +25,25 @@ const Navbar = () => {
         </button>
         <nav className={`absolute top-16 left-0 w-full bg-blue-700 text-white md:static md:flex md:items-center md:justify-between md:space-x-4 ${isOpen ? 'block' : 'hidden'} md:block z-10`}>
           <ul className="hidden md:flex flex-grow justify-center space-x-4">
-            <li><Link to="/" className="hover:underline">Home</Link></li>
-            <li><Link to="/data-repository" className="hover:underline">KAM Data Repository</Link></li>
-            <li><Link to="/data-sheets" className="hover:underline">Basic Data Sheets</Link></li>
+            <li><Link to="/" className="hover:underline" onClick={closeMenu}>Home</Link></li>
+            <li><Link to="/data-repository" className="hover:underline" onClick={closeMenu}>KAM Data Repository</Link></li>
+            <li><Link to="/data-sheets" className="hover:underline" onClick={closeMenu}>Basic Data Sheets</Link></li>
           </ul>
           <div className="hidden md:flex space-x-4">
-            <Link to="/login">
+            <Link to="/login" onClick={closeMenu}>
               <button className="bg-blue-800 hover:bg-blue-600 text-white py-1 px-4 rounded">Log In</button>
             </Link>
-            <Link to="/signup">
+            <Link to="/signup" onClick={closeMenu}>
               <button className="bg-blue-800 hover:bg-blue-600 text-white py-1 px-4 rounded">Sign Up</button>
             </Link>
           </div>
           <div className={`md:hidden flex flex-col items-center space-y-2 p-4 mt-16 ${isOpen ? 'block' : 'hidden'}`}>
             <ul className="flex flex-col space-y-2">
-              <li><Link to="/" className="hover:underline">Home</Link></li>
-              <li><Link to="/data-repository" className="hover:underline">KAM Data Repository</Link></li>
-              <li><Link to="/data-sheets" className="hover:underline">Basic Data Sheets</Link></li>
-              <li><Link to="/login" className="hover:underline">Log In</Link></li>
-              <li><Link to="/signup" className="hover:underline">Sign Up</Link></li>
+              <li><Link to="/" className="hover:underline" onClick={closeMenu}>Home</Link></li>
+              <li><Link to="/data-repository" className="hover:underline" onClick={closeMenu}>KAM Data Repository</Link></li>
+              <li><Link to="/data-sheets" className="hover:underline" onClick={closeMenu}>Basic Data Sheets</Link></li>
+              <li><Link to="/login" className="hover:underline" onClick={closeMenu}>Log In</Link></li>
+              <li><Link to="/signup" className="hover:underline" onClick={closeMenu}>Sign Up</Link></li>
             </ul>
           </div>
         </nav>
