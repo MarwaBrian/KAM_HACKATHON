@@ -15,8 +15,8 @@ const generateChartData = (indicator, data, years) => ({
       label: indicator,
       data: data,
       fill: true,
-      backgroundColor: 'rgba(75,192,192,0.2)',
-      borderColor: 'rgba(75,192,192,1)',
+      backgroundColor: 'rgba(54,162,235,0.2)',  
+      borderColor: 'rgba(54,162,235,1)',         
       tension: 0.1,
     },
   ],
@@ -26,6 +26,7 @@ const CountryDetails = () => {
   const [selectedCountry, setSelectedCountry] = useState('Kenya');
 
   const dummyData = {
+    // ... (your data here)
     Kenya: [
       { indicator: 'Real GDP growth (annual %)', data: [3.8, 5.0, 5.0, 4.2, 3.8, 5.6, 5.1, -0.3, 7.6, 4.8, 5.2, 5.4, 5.6] },
       { indicator: 'Real per Capita GDP Growth Rate (annual %)', data: [1.3, 2.6, 2.7, 1.9, 1.6, 3.5, 3.0, -2.3, 5.5, 2.8, 3.1, 3.4, 3.5] },
@@ -98,27 +99,26 @@ Malawi: [
     { "indicator": "Exports of goods and services (% of GDP)", "data": [15.0, 15.2, 15.5, 15.0, 14.8, 15.0, 15.2, 13.5, 13.3, 13.0, 12.8, 12.5, 12.2] },
     { "indicator": "Imports of goods and services (% of GDP)", "data": [29.0, 29.5, 30.0, 29.2, 29.5, 29.8, 30.0, 27.5, 27.8, 28.0, 28.2, 28.5, 28.8] }
   ]
-    
   };
 
   const years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
 
   return (
     <div className="p-4">
-      
-        <div className="relative mb-4 w-1/2">
-      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="country-select">
-        Select Country
-      </label>
-      <div className="relative">
-        <select
-          id="country-select"
-          className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-          value={selectedCountry}
-          onChange={(e) => setSelectedCountry(e.target.value)}
-        >
-          <option value="Kenya">Kenya</option>
-          <option value="Uganda">Uganda</option>
+      <div className="relative mb-4 w-1/2">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="country-select">
+          Select Country
+        </label>
+        <div className="relative">
+          <select
+            id="country-select"
+            className="block appearance-none w-full bg-white border border-blue-400 hover:border-blue-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline-blue"
+            value={selectedCountry}
+            onChange={(e) => setSelectedCountry(e.target.value)}
+          >
+            {/* ... (your options here) */}
+            <option value="Kenya">Kenya</option>
+            <option value="Uganda">Uganda</option>
           <option value="Tanzania">Tanzania</option>
           <option value="Rwanda">Rwanda</option>
           <option value="Burundi">Burundi</option>
@@ -133,16 +133,42 @@ Malawi: [
           <option value="Algeria">Algeria</option>
           <option value="Morocco">Morocco</option>
           <option value="Egypt">Egypt</option>
-        </select>
-        <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-          <FontAwesomeIcon icon={faChevronDown} className="text-gray-500" />
+           
+          </select>
+          <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+            <FontAwesomeIcon icon={faChevronDown} className="text-gray-500" />
+          </div>
         </div>
       </div>
-    </div>
+      
+      {/* New Table */}
+      <div className="overflow-x-auto mb-4">
+        <table className="min-w-full divide-y divide-blue-200">
+          <thead className="bg-blue-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">Indicator</th>
+              {years.map(year => (
+                <th key={year} className="px-6 py-3 text-left text-xs font-medium text-blue-500 uppercase tracking-wider">{year}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-blue-200">
+            {dummyData[selectedCountry].map(item => (
+              <tr key={item.indicator}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-900">{item.indicator}</td>
+                {item.data.map((value, index) => (
+                  <td key={index} className="px-6 py-4 whitespace-nowrap text-sm text-blue-600">{value}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       <div className="grid grid-cols-2 gap-4">
-        {dummyData[selectedCountry].map((item) => (
+        {dummyData[selectedCountry].map(item => (
           <div key={item.indicator} className="border p-4">
-            <h3 className="text-center font-bold mb-2">{item.indicator}</h3>
+            <h3 className="text-center font-bold mb-2 text-blue-700">{item.indicator}</h3>
             <div style={{ position: 'relative', height: '200px', width: '100%' }}>
               <Line
                 data={generateChartData(item.indicator, item.data, years)}
@@ -152,6 +178,9 @@ Malawi: [
                   plugins: {
                     legend: {
                       position: 'top',
+                      labels: {
+                        color: 'rgba(54,162,235,1)',
+                      },
                     },
                     tooltip: {
                       callbacks: {
@@ -161,7 +190,7 @@ Malawi: [
                       },
                     },
                   },
-                  aspectRatio: 1, 
+                  aspectRatio: 1,
                 }}
               />
             </div>
@@ -173,4 +202,3 @@ Malawi: [
 };
 
 export default CountryDetails;
-
