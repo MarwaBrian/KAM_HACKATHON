@@ -719,93 +719,95 @@ joblib.dump(vat_model, 'vat_model.pkl')
 # In[21]:
 
 
-# import streamlit as st
-# import pandas as pd
-# import numpy as np
-# from sklearn.ensemble import RandomForestRegressor
-# import joblib
-
-# # Load trained models (assuming you've saved them after training)
-# duty_model = joblib.load('duty_model.pkl')
-# vat_model = joblib.load('vat_model.pkl')
-
-# # Streamlit App
-# st.title('Import Duty and VAT Rate Prediction')
-
-# # Inputs from user
-# quantity = st.number_input('Quantity', min_value=0.0, value=1.0)
-# fob_value = st.number_input('FOB Value', min_value=0.0, value=1000.0)
-# entry_custom_value = st.number_input('Entry Custom Value', min_value=0.0, value=1000.0)
-# cif_value = st.number_input('CIF Value', min_value=0.0, value=1000.0)
-# year = st.number_input('Year', min_value=2000, value=2024)
-# month = st.number_input('Month', min_value=1, max_value=12, value=8)
-
-# # Assuming you're using a similar encoding process for categorical variables
-# countryoforigin = st.selectbox('Country of Origin', ['Country_A', 'Country_B', 'Country_C'])
-# countryofdestination = st.selectbox('Country of Destination', ['Country_X', 'Country_Y', 'Country_Z'])
-# port_of_discharge = st.selectbox('Port of Discharge', ['Port_1', 'Port_2', 'Port_3'])
-# currency = st.selectbox('Currency', ['USD', 'EUR', 'KSH'])
-
-# # Create the feature vector for prediction
-# input_data = {
-#     'quantity': quantity,
-#     'fob_value': fob_value,
-#     'entry_custom_value': entry_custom_value,
-#     'cif_value': cif_value,
-#     'year': year,
-#     'month': month,
-#     f'countryoforigin_{countryoforigin}': 1,
-#     f'countryofdestination_{countryofdestination}': 1,
-#     f'port_of_discharge_{port_of_discharge}': 1,
-#     f'currency_{currency}': 1
-# }
-
-# # Ensure all columns are present
-# input_df = pd.DataFrame([input_data])
-# input_df = input_df.reindex(columns=X.columns, fill_value=0)
-
-# # Predict duty and VAT rates
-# predicted_duty_rate = duty_model.predict(input_df)
-# predicted_vat_rate = vat_model.predict(input_df)
-
-# st.write(f"Predicted Duty Rate: {predicted_duty_rate[0]}")
-# st.write(f"Predicted VAT Rate: {predicted_vat_rate[0]}")
 import streamlit as st
 import pandas as pd
+import numpy as np
+from sklearn.ensemble import RandomForestRegressor
 import joblib
 
-# Load trained models
+# Load trained models (assuming you've saved them after training)
 duty_model = joblib.load('duty_model.pkl')
 vat_model = joblib.load('vat_model.pkl')
 
 # Streamlit App
-st.title("Duty and VAT Prediction")
+st.title('Import Duty and VAT Rate Prediction')
 
-# User inputs
-st.write("Enter the following details:")
-hs_chapter = st.number_input("HS Chapter", min_value=0)
-quantity = st.number_input("Quantity", min_value=0.0)
-fob_value = st.number_input("FOB Value", min_value=0.0)
-entry_custom_value = st.number_input("Entry Custom Value", min_value=0.0)
+# Inputs from user
+quantity = st.number_input('Quantity', min_value=0.0, value=1.0)
+fob_value = st.number_input('FOB Value', min_value=0.0, value=1000.0)
+entry_custom_value = st.number_input('Entry Custom Value', min_value=0.0, value=1000.0)
+cif_value = st.number_input('CIF Value', min_value=0.0, value=1000.0)
+year = st.number_input('Year', min_value=2000, value=2024)
+month = st.number_input('Month', min_value=1, max_value=12, value=8)
 
-# Button to run prediction
-if st.button('Run'):
-    # Prepare the input data
-    input_data = pd.DataFrame({
-        'hs_chapter': [hs_chapter],
-        'quantity': [quantity],
-        'fob_value': [fob_value],
-        'entry_custom_value': [entry_custom_value]
-    })
+# Assuming you're using a similar encoding process for categorical variables
+countryoforigin = st.selectbox('Country of Origin', ['Country_A', 'Country_B', 'Country_C'])
+countryofdestination = st.selectbox('Country of Destination', ['Country_X', 'Country_Y', 'Country_Z'])
+port_of_discharge = st.selectbox('Port of Discharge', ['Port_1', 'Port_2', 'Port_3'])
+currency = st.selectbox('Currency', ['USD', 'EUR', 'KSH'])
 
-    # Make predictions
-    duty_rate_pred = duty_model.predict(input_data)
-    vat_rate_pred = vat_model.predict(input_data)
+# Create the feature vector for prediction
+input_data = {
+    'quantity': quantity,
+    'fob_value': fob_value,
+    'entry_custom_value': entry_custom_value,
+    'cif_value': cif_value,
+    'year': year,
+    'month': month,
+    f'countryoforigin_{countryoforigin}': 1,
+    f'countryofdestination_{countryofdestination}': 1,
+    f'port_of_discharge_{port_of_discharge}': 1,
+    f'currency_{currency}': 1
+}
 
-    # Display results
-    st.write("### Predictions")
-    st.write(f"Duty Rate: {duty_rate_pred[0]}")
-    st.write(f"VAT Rate: {vat_rate_pred[0]}")
+# Ensure all columns are present
+input_df = pd.DataFrame([input_data])
+input_df = input_df.reindex(columns=X.columns, fill_value=0)
+
+# Predict duty and VAT rates
+predicted_duty_rate = duty_model.predict(input_df)
+predicted_vat_rate = vat_model.predict(input_df)
+
+st.write(f"Predicted Duty Rate: {predicted_duty_rate[0]}")
+st.write(f"Predicted VAT Rate: {predicted_vat_rate[0]}")
+
+
+# import streamlit as st
+# import pandas as pd
+# import joblib
+
+# # Load trained models
+# duty_model = joblib.load('duty_model.pkl')
+# vat_model = joblib.load('vat_model.pkl')
+
+# # Streamlit App
+# st.title("Duty and VAT Prediction")
+
+# # User inputs
+# st.write("Enter the following details:")
+# hs_chapter = st.number_input("HS Chapter", min_value=0)
+# quantity = st.number_input("Quantity", min_value=0.0)
+# fob_value = st.number_input("FOB Value", min_value=0.0)
+# entry_custom_value = st.number_input("Entry Custom Value", min_value=0.0)
+
+# # Button to run prediction
+# if st.button('Run'):
+#     # Prepare the input data
+#     input_data = pd.DataFrame({
+#         'hs_chapter': [hs_chapter],
+#         'quantity': [quantity],
+#         'fob_value': [fob_value],
+#         'entry_custom_value': [entry_custom_value]
+#     })
+
+#     # Make predictions
+#     duty_rate_pred = duty_model.predict(input_data)
+#     vat_rate_pred = vat_model.predict(input_data)
+
+#     # Display results
+#     st.write("### Predictions")
+#     st.write(f"Duty Rate: {duty_rate_pred[0]}")
+#     st.write(f"VAT Rate: {vat_rate_pred[0]}")
 
 
 # In[ ]:
