@@ -1,6 +1,6 @@
 absl-py==2.0.0
 # aiobotocore @ file:///croot/aiobotocore_1682536655331/work
-aiofiles @ file:///croot/aiofiles_1683773582346/work
+aiofiles:23.1.0 @ file:///croot/aiofiles_1683773582346/work
 aiohttp @ file:///work/ci_py311/aiohttp_1676827623103/work
 aioitertools @ file:///tmp/build/80754af9/aioitertools_1607109665762/work
 aiosignal @ file:///tmp/build/80754af9/aiosignal_1637843061372/work
@@ -519,7 +519,3 @@ zict @ file:///croot/zict_1682698729376/work
 zipp @ file:///work/ci_py311/zipp_1676822894295/work
 zope.interface @ file:///work/ci_py311/zope.interface_1676905896080/work
 zstandard @ file:///work/ci_py311_2/zstandard_1679339489613/work
-pandas
-streamlit
-joblib
-aiofiles
