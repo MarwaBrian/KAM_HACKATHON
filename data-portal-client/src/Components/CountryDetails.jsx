@@ -238,76 +238,21 @@
 // export default CountryDetails;
 
 
-import { useState, useEffect } from 'react';
+import Charts from "./Charts"
+import DataTable from "./DataTable"
 
-const ImportDataTable = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    
-    fetch('/public/import.json')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setData(data.imports);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
-  }, []);
+function CountryDetails() {
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
 
-  return (
-    <div>
-      <h1>Import Data</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Country of Origin</th>
-            <th>Country of Destination</th>
-            <th>HS Code</th>
-            <th>HS Chapter</th>
-            <th>Quantity (kg)</th>
-            <th>FOB Value (Currency)</th>
-            <th>CIF Value (Currency)</th>
-            <th>Import Duty (Currency)</th>
-            <th>Import VAT (Currency)</th>
-            <th>Total Tax Payable (Currency)</th>
-            <th>Total Tax Paid (Currency)</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              <td>{item.countryoforigin.trim()}</td>
-              <td>{item.countryofdestination.trim()}</td>
-              <td>{item.hscode}</td>
-              <td>{item.hs_chapter}</td>
-              <td>{item.quantity}</td>
-              <td>{item.fob_value} {item.currency}</td>
-              <td>{item.cif_value} {item.currency}</td>
-              <td>{item.import_duty} {item.currency}</td>
-              <td>{item.import_vat} {item.currency}</td>
-              <td>{item.total_tax_payable} {item.currency}</td>
-              <td>{item.total_tax_paid} {item.currency}</td>
-              <td>{new Date(item.date).toLocaleDateString()}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
-export default ImportDataTable;
+    return (
+      <>
+        <div>
+         <DataTable />
+         <Charts />
+        </div>
+      </>
+    )
+  }
+  
+  export default CountryDetails

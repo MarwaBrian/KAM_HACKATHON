@@ -24,7 +24,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/country/:countryName" element={<CountryDetails />} />
+        {/* <Route path="/year/:year" element={<CountryDetails />} /> */}
+        <Route path="/country-detail/:category/:year" element={<CountryDetails />} />
         <Route path="exports/:country" element={<CountryData />} />
         <Route path="imports/:country" element={<CountryData />} />
         <Route path="/datasheets/:tab/:country" element={<CountryData />} />

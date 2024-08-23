@@ -1,13 +1,8 @@
 
 
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import excelImage from '../assets/excel.png'; 
-
-const mockData = {
-  algeria: { imports: [{ item: 'Rice', quantity: 100, value: 2000 }], exports: [{ item: 'Oil', quantity: 50, value: 5000 }] },
-  angola: { imports: [], exports: [] },
-  // More mock data...
-};
+import excelImage from '../assets/excel.png';
 
 const downloadCSV = (filename, headers, data) => {
   const csvContent = [
@@ -26,13 +21,46 @@ const downloadCSV = (filename, headers, data) => {
 };
 
 const CountryData = () => {
-  const { tab, country } = useParams();
-  const normalizedCountry = country.replace(/-/g, ' ').toLowerCase();
-  const data = mockData[normalizedCountry] || { imports: [], exports: [] };
+  const { year, country } = useParams();
+  const normalizedCountry = country.replace(/-/g, ' ').toUpperCase().trim();
 
-  const handleDownload = (type) => {
-    const headers = ['Item', 'Quantity', 'Value'];
-    const rows = data[type].map(item => [item.item, item.quantity, item.value]);
+  const [importData, setImportData] = useState([]);
+  const [exportData, setExportData] = useState([]);
+
+  useEffect(() => {
+    // Fetch import data
+    fetch('/import.json')
+      .then(response => response.json())
+      .then(data => setImportData(data.imports))
+      .catch(error => console.error('Error fetching import data:', error));
+
+    // Fetch export data
+    fetch('/exports.json')
+      .then(response => response.json())
+      .then(data => setExportData(data.exports))
+      .catch(error => console.error('Error fetching export data:', error));
+  }, []);
+
+  // Select relevant columns for display
+  const importRelevantData = importData.map(item => ({
+    regdate: new Date(item.regdate).toLocaleDateString(),
+    countryoforigin: item.countryoforigin.trim(),
+    quantity: item.quantity,
+    fob_value: item.fob_value
+  }));
+
+  const exportRelevantData = exportData.map(item => ({
+    month: item.month,
+    destination: item.destination,
+    hs_code: item.hs_code,
+    short_desc: item.short_desc,
+    quantity: item.quantity,
+    fob_value: item.fob_value
+  }));
+
+  const handleDownload = (type, data) => {
+    const headers = type === 'import' ? ['Registration Date', 'Country of Origin', 'Quantity', 'FOB Value'] : ['Month', 'Destination', 'HS Code', 'Description', 'Quantity', 'FOB Value'];
+    const rows = data.map(item => Object.values(item));
     const filename = `${normalizedCountry}-${type}.csv`;
     downloadCSV(filename, headers, rows);
   };
@@ -40,42 +68,91 @@ const CountryData = () => {
   return (
     <div>
       <h2 className="text-xl font-bold">
-        {normalizedCountry.charAt(0).toUpperCase() + normalizedCountry.slice(1)} {tab.charAt(0).toUpperCase() + tab.slice(1)} Data
+        {normalizedCountry} Data
         <span className="text-blue-600">(Last Update June 2024)</span>
       </h2>
       <div className="mt-4">
-        <button onClick={() => handleDownload(tab)} className="text-blue-600">
-          <img
-            src={excelImage} 
-            alt={`Download Excel for ${normalizedCountry}`}
-            className="w-6 h-6"
-          />
-        </button>
-        <table className="min-w-full mt-2 border-collapse border border-gray-200">
-          <thead>
-            <tr>
-              <th className="border border-gray-300 p-2">Item</th>
-              <th className="border border-gray-300 p-2">Quantity</th>
-              <th className="border border-gray-300 p-2">Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data[tab].length > 0 ? (
-              data[tab].map((item, index) => (
-                <tr key={index}>
-                  <td className="border border-gray-300 p-2">{item.item}</td>
-                  <td className="border border-gray-300 p-2">{item.quantity}</td>
-                  <td className="border border-gray-300 p-2">{item.value}</td>
-                </tr>
-              ))
-            ) : (
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold">Imports Data</h3>
+          <button onClick={() => handleDownload('import', importRelevantData)} className="text-blue-600">
+            <img
+              src={excelImage}
+              alt={`Download Import Excel for ${normalizedCountry}`}
+              className="w-6 h-6"
+            /> <p>Download</p>
+          </button>
+          <table className="min-w-full mt-2 border-collapse border border-gray-200 text-sm">
+            <thead>
               <tr>
-                <td colSpan="3" className="border border-gray-300 p-2 text-center">No data available</td>
+                <th className="border border-gray-300 p-1">Registration Date</th>
+                <th className="border border-gray-300 p-1">Country of Origin</th>
+                <th className="border border-gray-300 p-1">Quantity</th>
+                <th className="border border-gray-300 p-1">FOB Value</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {importRelevantData.length > 0 ? (
+                importRelevantData.slice(0, 5).map((item, index) => (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-1">{item.regdate}</td>
+                    <td className="border border-gray-300 p-1">{item.countryoforigin}</td>
+                    <td className="border border-gray-300 p-1">{item.quantity}</td>
+                    <td className="border border-gray-300 p-1">{item.fob_value}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="border border-gray-300 p-1 text-center">No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="mb-12"> {/* Added margin-bottom to space out from footer */}
+          <h3 className="text-lg font-semibold">Exports Data</h3>
+          <button onClick={() => handleDownload('export', exportRelevantData)} className="text-blue-600">
+            <img
+              src={excelImage}
+              alt={`Download Export Excel for ${normalizedCountry}`}
+              className="w-6 h-6"
+            /> <p>Download</p>
+          </button>
+          <table className="min-w-full mt-2 border-collapse border border-gray-200 text-sm">
+            <thead>
+              <tr>
+                <th className="border border-gray-300 p-1">Month</th>
+                <th className="border border-gray-300 p-1">Destination</th>
+                <th className="border border-gray-300 p-1">HS Code</th>
+                <th className="border border-gray-300 p-1">Description</th>
+                <th className="border border-gray-300 p-1">Quantity</th>
+                <th className="border border-gray-300 p-1">FOB Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {exportRelevantData.length > 0 ? (
+                exportRelevantData.slice(0, 5).map((item, index) => (
+                  <tr key={index}>
+                    <td className="border border-gray-300 p-1">{item.month}</td>
+                    <td className="border border-gray-300 p-1">{item.destination}</td>
+                    <td className="border border-gray-300 p-1">{item.hs_code}</td>
+                    <td className="border border-gray-300 p-1">{item.short_desc}</td>
+                    <td className="border border-gray-300 p-1">{item.quantity}</td>
+                    <td className="border border-gray-300 p-1">{item.fob_value}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="border border-gray-300 p-1 text-center">No data available</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
+      <footer className="mt-12">
+        {/* Footer content here */}
+      </footer>
     </div>
   );
 };
